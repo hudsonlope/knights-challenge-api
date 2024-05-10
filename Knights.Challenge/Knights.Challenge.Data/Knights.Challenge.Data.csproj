@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  
+<Target Name="StrongNameAlias" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
+  <ItemGroup>
+    <ReferencePath Condition="'%(FileName)' == 'Dapper.StrongName'">
+      <Aliases>MP_DapperStrongNameAlias</Aliases>
+    </ReferencePath>
+ </ItemGroup>
+</Target>
+
+  <ItemGroup>
+    <PackageReference Include="LinqKit" Version="1.2.5" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.4" />
+    <PackageReference Include="MongoDB.Driver" Version="2.25.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Knights.Challenge.Domain\Knights.Challenge.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
