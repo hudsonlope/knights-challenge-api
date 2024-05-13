@@ -6,6 +6,10 @@ namespace Knights.Challenge.Domain.Entities
     public class KnightEntity : BaseEntity
     {
         private DateTime _birthday = new DateTime();
+        public KnightEntity()
+        {
+            Weapons = new List<Weapon>();
+        }
 
         public string Name { get; set; }
         public string Nickname { get; set; }

@@ -53,7 +53,7 @@ namespace Knights.Challenge.Api
                 o.InstanceName = redisSettings.InstanceName;
                 o.Configuration = redisSettings.ConnectionString;
             });
-
+            services.AddSingleton<IDistributedCacheEntryOptionsFactory, DistributedCacheEntryOptionsFactory>();
             services.AddScoped<IRedisService, RedisService>();
             #endregion Redis
 
@@ -79,10 +79,6 @@ namespace Knights.Challenge.Api
             #region Fluent Validation DTO's
             services.AddFluentValidationAutoValidation()
                     .AddFluentValidationClientsideAdapters()
-                    //.AddFluentValidation(config =>
-                    //{
-                    //    config.ValidatorOptions.LanguageManager.Culture = new CultureInfo("pt-br");
-                    //})
                     .AddMvc()
                     .AddNewtonsoftJson(option =>
                     {
@@ -107,10 +103,10 @@ namespace Knights.Challenge.Api
                 {
                     Version = "v1",
                     Title = "Knights.Challenge.Api",
-                    Description = "CRUD de Heróis",
+                    Description = "CRUD Knights Challenge",
                     Contact = new OpenApiContact
                     {
-                        Name = "Teste",
+                        Name = "Knights Challenge",
                         Email = "admin@teste.com.br",
                         Url = new Uri("http://www.teste.com.br/"),
                     }

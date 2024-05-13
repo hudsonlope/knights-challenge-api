@@ -116,7 +116,6 @@ namespace Knights.Challenge.Service.Services
 
             var hash = knight.Deleted ? Constants.AllHeros : Constants.AllKnights;
             await UpdateCache(id, hash, false, knight);
-
             return _mapper.Map<KnightResponseDTO>(knight);
         }
 

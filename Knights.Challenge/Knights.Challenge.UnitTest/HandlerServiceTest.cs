@@ -1,4 +1,5 @@
 ﻿using Knights.Challenge.Data.Repositories;
+using Knights.Challenge.Domain.Configuration;
 using Knights.Challenge.Domain.Entities;
 using Knights.Challenge.Domain.Interfaces.Cache;
 using Knights.Challenge.Domain.Interfaces.Repository;
@@ -25,30 +26,20 @@ namespace Knights.Challenge.UnitTest
 
             ServiceProviderMock = new ServiceCollection()
                       .AddSingleton<IConfiguration>(config)
-                      .AddTransient<IBaseRepository<BaseEntity>, BaseRepository<BaseEntity>>()
-                      //.AddDependencySharedPackageDatabase(config)
-                      //.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>))
-                      //.AddSingleton<IFinancialTransactionService, FinancialTransactionService>()
-                      //.AddSingleton<IFinancialTransactionPRepository, FinancialTransactionPRepository>()
-                      //.AddSingleton<IFinancialTransactionRRepository, FinancialTransactionRRepository>()
-                      //.AddSingleton<IBasePersistenceRepository<BaseEntity>, BasePersistenceRepository<BaseEntity>>()
-                      //.AddScoped(typeof(IBasePersistenceRepository<>), typeof(BasePersistenceRepository<>))
+                      .AddScoped<IBaseRepository<BaseEntity>, BaseRepository<BaseEntity>>()
+                      .AddScoped<IKnightRepository, KnightRepository>()
                       .AddScoped<IKnightService, KnightService>()
-                      .AddScoped<IRedisService, RedisService>()
-                      //.AddScoped<IFinancialTransactionPRepository, FinancialTransactionPRepository>()
                       .AddLogging()
                       .AddAutoMapper(Assembly.GetEntryAssembly())
-                      //.AddDbContext<DailyCashFlowContext>(options => options.UseSqlServer(config.GetSection("ConnectionString").Value))
+                      .AddStackExchangeRedisCache(o =>
+                      {
+                          var redisSettings = config.GetSection(Constants.RedisSettings).Get<RedisSettings>();
+                          o.InstanceName = redisSettings.InstanceName;
+                          o.Configuration = redisSettings.ConnectionString;
+                      })
+                      .AddScoped<IRedisService, RedisService>()
                       .BuildServiceProvider();
         }
 
-        //private IConfiguration GetConfiguration()
-        //{
-        //    return new ConfigurationBuilder()
-        //        .SetBasePath(Directory.GetCurrentDirectory())
-        //        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        //        .AddEnvironmentVariables()
-        //        .Build();
-        //}
     }
 }
